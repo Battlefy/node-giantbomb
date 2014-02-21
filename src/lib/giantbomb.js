@@ -21,7 +21,6 @@ var gb = function(key) {
       format: "json"
     }
   };
-
 };
 
 /**
@@ -80,35 +79,42 @@ gb.prototype.getAll = function(resource, opts, cb) {
   // make first request to get the number of results
   this[resource]("", opts, function(err, res) {
     //push the first result to the batch
-    batchedResults.push(res.results[0]);
 
     //calc the total number of requests that will be needed (limit 100 results per request)
     var numResults = res.number_of_total_results;
-    var numOfRequiredRequests = Math.ceil(numResults / 100);
 
-    opts.limit = 100;
-    opts.offset = 1;
+    if (numResults !== 0) {
+      //push the first result to the batch
+      batchedResults.push(res.results[0]);
 
-    //array of functions that will make up all the requests to be made
-    var flow = [];
+      var numOfRequiredRequests = Math.ceil(numResults / 100);
 
-    for(var i = 0; i < numOfRequiredRequests; i++) {
-      flow.push(function(_cb) {
-        // make a request, push the results to the batch
-        _this[resource]("", opts, function(err, resultSet) {
-          _.each(resultSet.results, function(val) {
-            batchedResults.push(val);
+      opts.limit = 100;
+      opts.offset = 1;
+
+      //array of functions that will make up all the requests to be made
+      var flow = [];
+
+      for(var i = 0; i < numOfRequiredRequests; i++) {
+        flow.push(function(_cb) {
+          // make a request, push the results to the batch
+          _this[resource]("", opts, function(err, resultSet) {
+            _.each(resultSet.results, function(val) {
+              batchedResults.push(val);
+            });
+
+            opts.offset += 100;
+            _cb(err, null);
           });
+        })
+      }
 
-          opts.offset += 100;
-          _cb(err, null);
-        });
-      })
+      async.parallel(flow, function(err, result) {
+        return cb(err, batchedResults);
+      });
+    } else {
+      return cb(null, []);
     }
-
-    async.parallel(flow, function(err, result) {
-      cb(err, batchedResults);
-    });
   });
 };
 
