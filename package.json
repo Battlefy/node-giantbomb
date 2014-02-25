@@ -4,7 +4,7 @@
   "description": "Giantbomb api wrapper for node.js",
   "main": "src/lib/giantbomb.js",
   "author": "Battlefy <info@battlefy.com>",
-  "license" : "ISC"
+  "license" : "ISC",
   "repository": {
     "type": "git",
     "url": "git://github.com/battlefy/node-giantbomb.git"
