@@ -75,7 +75,7 @@ gb.prototype.getAll = function(resource, opts, cb) {
 
   var batchedResults = [];
 
-  _this = this;
+  var _this = this;
   // make first request to get the number of results
   this[resource]("", opts, function(err, res) {
     //push the first result to the batch
@@ -119,7 +119,7 @@ gb.prototype.getAll = function(resource, opts, cb) {
 };
 
 gb.prototype._buildUrl = function(resource, queryObj) {
-  urlObj = clone(this._baseUrl);
+  var urlObj = clone(this._baseUrl);
   urlObj.pathname += "" + resource + "/";
 
   _.each(queryObj, function(val, key) {
