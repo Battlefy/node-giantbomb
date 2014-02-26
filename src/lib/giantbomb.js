@@ -78,8 +78,6 @@ gb.prototype.getAll = function(resource, opts, cb) {
   var _this = this;
   // make first request to get the number of results
   this[resource]("", opts, function(err, res) {
-    //push the first result to the batch
-
     //calc the total number of requests that will be needed (limit 100 results per request)
     var numResults = res.number_of_total_results;
 
@@ -109,7 +107,7 @@ gb.prototype.getAll = function(resource, opts, cb) {
         })
       }
 
-      async.parallel(flow, function(err, result) {
+      async.series(flow, function(err, result) {
         return cb(err, batchedResults);
       });
     } else {
