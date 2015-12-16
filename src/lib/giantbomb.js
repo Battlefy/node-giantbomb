@@ -18,7 +18,8 @@ var gb = function(key) {
     pathname: "/api/",
     query: {
       api_key: this.apiKey,
-      format: "json"
+      format: "json",
+      sort: "original_release_date:desc"
     }
   };
 };
