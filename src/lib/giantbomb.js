@@ -14,7 +14,7 @@ var gb = function(key) {
 
   this._baseUrl = {
     protocol: "http:",
-    host: "giantbomb.com",
+    host: "www.giantbomb.com",
     pathname: "/api/",
     query: {
       api_key: this.apiKey,
@@ -79,6 +79,9 @@ gb.prototype.getAll = function(resource, opts, cb) {
   var _this = this;
   // make first request to get the number of results
   this[resource]("", opts, function(err, res) {
+    if (err) {
+      return cb(err);
+    }
     //calc the total number of requests that will be needed (limit 100 results per request)
     var numResults = res.number_of_total_results;
 
