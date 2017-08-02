@@ -2,7 +2,6 @@
 
 //var http = require("http");
 var request = require("request");
-
 var _ = require("underscore");
 
 /**
@@ -14,7 +13,7 @@ var _request = function(reqUrl, cb) {
   request({
     url: reqUrl,
     headers: {
-      'User-Agent:': 'battlefy hera',
+      'User-Agent': 'battlefy hera',
     }
   }, function(error, response, body) {
     if (error) {
