@@ -101,7 +101,7 @@ gb.prototype.getAll = function(resource, opts, cb) {
         flow.push(function(_cb) {
           // make a request, push the results to the batch
           _this[resource]("", opts, function(err, resultSet) {
-            _.each(resultSet.results, function(val) {
+            _.each((resultSet && resultSet.results) || [], function(val) {
               batchedResults.push(val);
             });
 
